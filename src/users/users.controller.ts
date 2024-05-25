@@ -9,8 +9,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { NewUserDto } from './dto/new-user.dto';
+import { NewUserDto, UpdateUserDto } from './dto';
 
 @Controller('users')
 export class UsersController {
@@ -27,7 +26,7 @@ export class UsersController {
     }
   }
 
-  /** get all users */
+  /** get user by id*/
   @Get(':id')
   getUser(@Param('id') userId: string) {
     try {

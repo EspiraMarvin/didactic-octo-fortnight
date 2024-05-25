@@ -1,5 +1,4 @@
 import { MinLength, IsEnum, IsEmail } from 'class-validator';
-// import { UserRole } from '../user-role.enum';
 
 export enum UserRole {
   ADMIN = 'admin',

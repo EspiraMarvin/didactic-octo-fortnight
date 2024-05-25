@@ -1,16 +1,10 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/schemas/user.schema';
 import { deletePwdFromResponse } from 'src/utils/helpers';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { hash } from 'bcryptjs';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { NewUserDto } from './dto/new-user.dto';
 
 @Injectable()
@@ -25,9 +19,6 @@ export class UsersService {
    */
   async getUsers() {
     const users = await this.userModel.find({});
-
-    if (users.length === 0) throw new NotFoundException('users not found');
-
     return users.map((user) => deletePwdFromResponse(user));
   }
 
@@ -140,6 +131,11 @@ export class UsersService {
     return deletePwdFromResponse(deleteUser);
   }
 
+  /**
+   *  create user
+   * @param body
+   * @returns
+   */
   async createUser(body: NewUserDto) {
     const userExists = await this.userModel.findOne({
       email: body.email,
@@ -168,8 +164,11 @@ export class UsersService {
     const password = await hash(body.password.toString(), 10);
     body.password = password;
 
-    let newUser = new this.userModel(body);
-    newUser = await newUser.save();
+    // let newUser = new this.userModel(body);
+    // newUser = await newUser.save();
+
+    const newUser = new this.userModel(body);
+    await newUser.save();
 
     return deletePwdFromResponse(newUser);
   }

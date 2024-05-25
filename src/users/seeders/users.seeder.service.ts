@@ -17,7 +17,7 @@ export class UsersSeedService {
       })
       .exec();
 
-    if (exists) return this.logger.log(`Seed data in sync`);
+    if (exists) return this.logger.log(`Users seed data in sync`);
 
     /** data not in db seed the users data */
     const users = [
@@ -26,14 +26,12 @@ export class UsersSeedService {
         email: 'admin@incourage.com',
         password: 'password123',
         role: 'admin',
-        date: new Date(),
       },
       {
         name: 'marvin espira',
         email: 'espira@example.com',
         password: 'password1234',
         role: 'agent',
-        date: new Date(),
       },
     ];
 
