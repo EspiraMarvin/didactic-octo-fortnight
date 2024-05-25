@@ -2,7 +2,7 @@ import { IsEmail, MinLength, IsString } from 'class-validator';
 
 export class RegisterNewAgentDto {
   @IsString()
-  @MinLength(3)
+  @MinLength(5)
   name?: string;
 
   @IsEmail()

@@ -4,8 +4,7 @@ import { Model } from 'mongoose';
 import { User } from 'src/schemas/user.schema';
 import { deletePwdFromResponse } from 'src/utils/helpers';
 import { hash } from 'bcryptjs';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { NewUserDto } from './dto/new-user.dto';
+import { NewUserDto, UpdateUserDto } from './dto';
 
 @Injectable()
 export class UsersService {
@@ -163,9 +162,6 @@ export class UsersService {
 
     const password = await hash(body.password.toString(), 10);
     body.password = password;
-
-    // let newUser = new this.userModel(body);
-    // newUser = await newUser.save();
 
     const newUser = new this.userModel(body);
     await newUser.save();

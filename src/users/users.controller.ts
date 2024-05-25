@@ -21,7 +21,6 @@ export class UsersController {
     try {
       return this.service.getUsers();
     } catch (err) {
-      // throw err;
       throw new Error(err);
     }
   }
@@ -45,7 +44,6 @@ export class UsersController {
     try {
       return this.service.updateUser(userId, body);
     } catch (err) {
-      //   throw err;
       throw new Error(err);
     }
   }
