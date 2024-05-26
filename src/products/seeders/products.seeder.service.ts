@@ -20,7 +20,7 @@ export class ProductsSeedService {
       .exec();
 
     if (productsExists.length > 0)
-      return this.logger.log(`Products seed data in sync`);
+      return this.logger.log(`Products seed data in sync ✔`);
 
     /** data not in db seed the users data */
     const products = [

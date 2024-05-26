@@ -9,12 +9,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get<ConfigService>(ConfigService);
   await app.listen(configService.get<number>('PORT') || 3000);
-  /**seed users, products & commission to the DB */
+  /**seed users, commission rate & products to the DB */
   const usersSeedService = app.get(UsersSeedService);
   await usersSeedService.seed();
+  await usersSeedService.seedCommission();
   const productsSeedService = app.get(ProductsSeedService);
   await productsSeedService.seed();
-  // TODO: Add commission seeder service
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 }
 bootstrap();

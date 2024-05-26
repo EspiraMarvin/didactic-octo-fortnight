@@ -3,12 +3,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { hash } from 'bcryptjs';
 import { User } from 'src/schemas/user.schema';
-
+import { Commission } from 'src/schemas/commission.schema';
 @Injectable()
 export class UsersSeedService {
   private readonly logger = new Logger(UsersSeedService.name);
 
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Commission.name) private commissionModel: Model<Commission>,
+  ) {}
 
   async seed() {
     const exists = await this.userModel
@@ -17,7 +20,7 @@ export class UsersSeedService {
       })
       .exec();
 
-    if (exists) return this.logger.log(`Users seed data in sync`);
+    if (exists) return this.logger.log(`Users seed data in sync ✔`);
 
     /** data not in db seed the users data */
     const users = [
@@ -42,5 +45,19 @@ export class UsersSeedService {
       await createdUser.save();
     }
     this.logger.log(`Users data seeded successfully`);
+  }
+
+  async seedCommission() {
+    /** seeed commission rate for the agents */
+    const commissionExists = await this.commissionModel.findOne({});
+
+    if (commissionExists)
+      return this.logger.log(`Commission seed data in sync ✔`);
+
+    const commissionRate = 3;
+
+    const commission = new this.commissionModel({ commission: commissionRate });
+    await commission.save();
+    this.logger.log(`Commission data seeded successfully`);
   }
 }
