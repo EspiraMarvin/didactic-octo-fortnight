@@ -160,6 +160,7 @@ export class UsersService {
       );
     }
 
+    // hash password
     const password = await hash(body.password.toString(), 10);
     body.password = password;
 

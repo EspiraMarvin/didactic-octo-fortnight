@@ -6,16 +6,19 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { NewUserDto, UpdateUserDto } from './dto';
+import { AuthGuard, AdminGuard } from 'src/auth/guards';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly service: UsersService) {}
 
   /** get all users */
+  @UseGuards(AdminGuard)
   @Get()
   getUsers() {
     try {
@@ -26,6 +29,7 @@ export class UsersController {
   }
 
   /** get user by id*/
+  @UseGuards(AuthGuard)
   @Get(':id')
   getUser(@Param('id') userId: string) {
     try {
