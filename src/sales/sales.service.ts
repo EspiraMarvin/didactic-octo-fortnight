@@ -70,7 +70,7 @@ export class SalesService {
       agent: userId,
       total_commission_paid: latestPaidComm,
       total_commission_pending: lastPendingComm + totalCommission,
-      balance: lastCommBalance,
+      balance: lastCommBalance < 1 ? 0 : lastCommBalance,
       total_sales: totalSalesAmount + lastTotalSales,
       date: new Date(),
     });
