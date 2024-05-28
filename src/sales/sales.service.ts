@@ -67,7 +67,7 @@ export class SalesService {
       lastRecord.length > 0 ? lastRecord[0].total_sales : 0;
 
     const commissionsAccount = new this.accountModel({
-      user: userId,
+      agent: userId,
       total_commission_paid: latestPaidComm,
       total_commission_pending: lastPendingComm + totalCommission,
       balance: lastCommBalance,
@@ -78,7 +78,7 @@ export class SalesService {
     await commissionsAccount.save();
 
     const sale = new this.saleModel({
-      user: userId,
+      agent: userId,
       account: commissionsAccount.id,
       product: body.product,
       quantity: body.quantity,
@@ -91,13 +91,4 @@ export class SalesService {
 
     return sale;
   }
-
-  /**
-   *
-   * @param date_from
-   * @param date_to
-   * @param product
-   * @param user
-   * @returns
-   */
 }

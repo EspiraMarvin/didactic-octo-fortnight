@@ -9,7 +9,7 @@ export class Sale {
   product: Types.ObjectId;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
-  user: string;
+  agent: Types.ObjectId;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Account', required: true })
   account: Types.ObjectId;
