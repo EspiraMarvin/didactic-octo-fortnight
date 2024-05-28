@@ -13,19 +13,23 @@ export class ProductsService {
   ) {}
 
   /**
-   * get all products
-   * @returns products
+   * get products
+   * @returns
    */
-  async getProducts() {
-    const products: any[] = await this.ProductModel.find({});
-    return products;
+  async getProducts(): Promise<Product[]> {
+    try {
+      const products: any[] = await this.ProductModel.find({}).lean();
+      return products;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   /**
    * get a single product
    * @returns product
    */
-  async getProduct(productId: string) {
+  async getProduct(productId: string): Promise<Product> {
     const product = await this.ProductModel.findById(productId).lean();
 
     if (!product) {

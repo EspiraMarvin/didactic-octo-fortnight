@@ -34,12 +34,15 @@ export class ProductsSeedService {
         type: 'Automotive',
         price: 5000,
       },
+      {
+        name: 'Girl with a Pearl Earring',
+        type: 'Art',
+        price: 10000,
+      },
     ];
 
-    for (const product of products) {
-      const createdProduct = new this.productModel(product);
-      await createdProduct.save();
-    }
-    this.logger.log(`Products data seeded successfully`);
+    const isSeeded = await this.productModel.create(products);
+
+    if (isSeeded) this.logger.log(`Products data seeded successfully`);
   }
 }

@@ -11,6 +11,7 @@ import { ProductSchema } from './schemas/product.schema';
 import { CommissionSchema } from './schemas/commission.schema';
 import { UsersSeedService } from './users/seeders/users.seeder.service';
 import { ProductsSeedService } from './products/seeders/products.seeder.service';
+import { SalesModule } from './sales/sales.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ProductsSeedService } from './products/seeders/products.seeder.service'
     AuthModule,
     UsersModule,
     ProductsModule,
+    SalesModule,
   ],
   controllers: [AppController],
   providers: [AppService, UsersSeedService, ProductsSeedService],

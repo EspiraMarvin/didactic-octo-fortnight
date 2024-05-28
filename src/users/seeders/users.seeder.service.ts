@@ -54,9 +54,13 @@ export class UsersSeedService {
     if (commissionExists)
       return this.logger.log(`Commission seed data in sync ✔`);
 
-    const commissionRate = 3;
+    const commissionData = {
+      commission: 3,
+      valid: true,
+      created_date: new Date(),
+    };
 
-    const commission = new this.commissionModel({ commission: commissionRate });
+    const commission = new this.commissionModel(commissionData);
     await commission.save();
     this.logger.log(`Commission data seeded successfully`);
   }

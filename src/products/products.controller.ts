@@ -6,11 +6,14 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { NewProductDto, UpdateProductDto } from './dto/index';
+import { AuthGuard } from 'src/auth/guards';
 
+@UseGuards(AuthGuard)
 @Controller('products')
 export class ProductsController {
   constructor(private readonly service: ProductsService) {}
@@ -21,7 +24,6 @@ export class ProductsController {
     try {
       return this.service.getProducts();
     } catch (err) {
-      // throw err;
       throw new Error(err);
     }
   }
