@@ -11,9 +11,9 @@ import {
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { NewProductDto, UpdateProductDto } from './dto/index';
-import { AuthGuard } from 'src/auth/guards';
+import { AdminGuard } from 'src/auth/guards';
 
-@UseGuards(AuthGuard)
+@UseGuards(AdminGuard)
 @Controller('products')
 export class ProductsController {
   constructor(private readonly service: ProductsService) {}

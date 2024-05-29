@@ -12,6 +12,7 @@ import { CommissionSchema } from './schemas/commission.schema';
 import { UsersSeedService } from './users/seeders/users.seeder.service';
 import { ProductsSeedService } from './products/seeders/products.seeder.service';
 import { SalesModule } from './sales/sales.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { SalesModule } from './sales/sales.module';
     UsersModule,
     ProductsModule,
     SalesModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService, UsersSeedService, ProductsSeedService],

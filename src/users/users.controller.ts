@@ -19,7 +19,6 @@ export class UsersController {
   constructor(private readonly service: UsersService) {}
 
   /** get all users */
-  @UseGuards(AdminGuard)
   @Get()
   getUsers() {
     try {
