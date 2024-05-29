@@ -13,6 +13,8 @@ import { UsersSeedService } from './users/seeders/users.seeder.service';
 import { ProductsSeedService } from './products/seeders/products.seeder.service';
 import { SalesModule } from './sales/sales.module';
 import { MailModule } from './mail/mail.module';
+import { TaskSchedulerController } from './task-scheduler/task-scheduler.controller';
+import { TaskSchedulerModule } from './task-scheduler/task-scheduler.module';
 
 @Module({
   imports: [
@@ -31,8 +33,9 @@ import { MailModule } from './mail/mail.module';
     ProductsModule,
     SalesModule,
     MailModule,
+    TaskSchedulerModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, TaskSchedulerController],
   providers: [AppService, UsersSeedService, ProductsSeedService],
 })
 export class AppModule {}
