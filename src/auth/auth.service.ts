@@ -71,7 +71,7 @@ export class AuthService {
     };
   }
 
-  async signUpAgent(body: SignUpAgentDto): Promise<any> {
+  async signUpAgent(body: SignUpAgentDto): Promise<User> {
     // check if user credentials are for the admin / our seeded admin credentials
     if (body.name === 'admin')
       throw new ForbiddenException(

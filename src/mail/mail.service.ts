@@ -20,6 +20,7 @@ export class MailService {
         end_date: data.endDate,
         total_products_sale: data.totalSaleValue,
         total_commission: data.totalCommission,
+        total_unpaid_commission: data.totalUnpaidCommission,
         products: data.soldProducts,
       },
     });

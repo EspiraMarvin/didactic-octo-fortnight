@@ -2,9 +2,12 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron } from '@nestjs/schedule';
 import { Model } from 'mongoose';
+
 import { MailService } from 'src/mail/mail.service';
 import { Sale } from 'src/schemas/sale.schema';
 import { User } from 'src/schemas/user.schema';
+import { Account } from 'src/schemas/account.schema';
+import * as moment from "moment";
 
 @Injectable()
 export class TaskSchedulerService {
@@ -12,11 +15,12 @@ export class TaskSchedulerService {
 
   constructor(
     @InjectModel(Sale.name) private saleModel: Model<Sale>,
+    @InjectModel(Account.name) private accountModel: Model<Account>,
     @InjectModel(User.name) private userModel: Model<User>,
     private readonly mailService: MailService,
   ) {}
 
-  async sendSalesReport(startDate: Date, endDate: Date, user: any) {
+  async sendSalesReport(startDate: Date, endDate: Date, user) {
     let filters: any = {};
     if (user) filters = { agent: user['_id'] };
 
@@ -48,7 +52,10 @@ export class TaskSchedulerService {
       };
     });
 
-    const totalSaleValue = stmt.reduce(
+      /** unpaid commission from the last commmulative accounts record */
+      const totalUnpaidCommission = (await this.accountModel.findOne({}).sort({ date: -1 })).total_commission_pending;
+
+      const totalSaleValue = stmt.reduce(
       (acc, curr) => acc + curr.totalAmount,
       0,
     );
@@ -65,16 +72,23 @@ export class TaskSchedulerService {
       endDate: JSON.stringify(endDate).slice(1, 11),
       totalSaleValue: totalSaleValue,
       totalCommission: totalCommission,
+      totalUnpaidCommission: totalUnpaidCommission,
       soldProducts: fStmtm,
     };
+
     this.mailService.sendSaleReport(data);
 
     return stmt;
   }
 
-  @Cron('45 * * * * *')
+  @Cron('0 0 7 15 * *')
   async sendSalesReportsToAgents() {
-    const user = await this.userModel.find({ email: 'espira@example.com' });
-    await this.sendSalesReport(new Date(), new Date(), user);
-  }
+    const users: User[] = await this.userModel.find({ role: 'agent' });
+    const startDate = moment().startOf('month').toDate();
+    const endDate =  new Date()
+
+    for await (const user of users)
+      await this.sendSalesReport(startDate, endDate, user);
+
+  } 
 }

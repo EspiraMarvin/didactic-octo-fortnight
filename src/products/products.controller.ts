@@ -47,7 +47,6 @@ export class ProductsController {
     try {
       return this.service.updateProduct(userId, body);
     } catch (err) {
-      //   throw err;
       throw new Error(err);
     }
   }

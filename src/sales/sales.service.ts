@@ -142,6 +142,7 @@ export class SalesService {
     return sales;
   }
 
+  
   /**
    *
    * @param startDate
@@ -149,9 +150,52 @@ export class SalesService {
    * @param userId
    * @returns
    */
-  async getAgentSalesReport(startDate: Date, endDate: Date, userId?: string) {
+  async getAllIndividualSales(
+    startDate: Date,
+    endDate: Date,
+    userId?: string,
+  ): Promise<Sale[]> {
+    this.logger.log(`USER ID`, userId);
     let filters: any = {};
     if (userId) filters = { agent: userId };
+
+    if (!startDate || !endDate)
+      throw new BadRequestException(
+        `Invalid! ${!startDate ? 'start date' : 'end date'} required`,
+      );
+
+    if (startDate || endDate) {
+      filters.date = {
+        /** greater than or equal to start date */
+        ...(startDate && { $gte: startDate }),
+        /** less than or equal to end date */
+        ...(endDate && { $lte: endDate }),
+      };
+    }
+
+    const sales = await this.saleModel
+      .find(filters)
+      .populate('product')
+      .lean()
+      .exec();
+
+    return sales;
+  }
+
+  
+  /**
+   *
+   * @param startDate
+   * @param endDate
+   * @param userId
+   * @returns
+   */
+  async getAgentSalesReport(startDate: Date, endDate: Date, user: User, sendToMail: boolean) {
+    let filters: any = {};
+    if (user.role !== 'agent')  throw new BadRequestException(
+      `Invalid operation!, If you're an agent contact for assistance`,
+    );
+    if (user) filters = { agent: user['_id'] };
 
     if (startDate || endDate) {
       filters.date = {
@@ -159,14 +203,62 @@ export class SalesService {
         ...(endDate && { $lte: endDate }),
       };
     }
-
-    const sale = await this.saleModel
+    const stmt = await this.saleModel
       .find(filters)
       .populate('agent')
       .populate('product')
       .populate('account')
       .exec();
 
-    return sale;
+    stmt['startDate'] = startDate;
+    stmt['endDate'] = endDate;
+
+    const fStmtm = stmt.map((stm) => {
+      return {
+        product_name: stm.product['name'],
+        price: stm.product['price'],
+        quantity: stm.quantity,
+        total_value: stm.totalAmount,
+        commission: stm.commission,
+        date_sold: stm.date,
+      };
+    });
+
+    /** unpaid commission from the last commmulative accounts record */
+    const totalUnpaidCommission = (await this.accountModel.findOne({}).sort({ date: -1 })).total_commission_pending;
+    this.logger.log(`UNPAID COMMISSION RESPONSE`, totalUnpaidCommission )
+
+    const totalSaleValue = stmt.reduce(
+      (acc, curr) => acc + curr.totalAmount,
+      0,
+    );
+
+    const totalCommission = stmt.reduce(
+      (acc, curr) => acc + curr.commission,
+      0,
+    );
+
+    const data = {
+      userName: stmt[0].agent['name'],
+      userEmail: stmt[0].agent['email'],
+      startDate: startDate,
+      endDate: endDate,
+      totalSaleValue: totalSaleValue,
+      totalCommission: totalCommission,
+      totalUnpaidCommission: totalUnpaidCommission,
+      soldProducts: fStmtm,
+    };
+
+    if (sendToMail) {
+      const mailContent = {
+        ...data,
+           startDate: JSON.stringify(data.startDate).slice(1, 11),
+           endDate: JSON.stringify(data.endDate).slice(1, 11)
+          }
+         this.mailService.sendSaleReport(mailContent);
+    }
+
+    return data;
+    
   }
 }
