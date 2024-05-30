@@ -28,11 +28,14 @@
 
 ## Installation
 
-## copy env.example file and prefill the config variables
+- Create a .env file, copy the environment variables from the env.example  file and prefill with your creds
+##
 
 ```bash
 $ yarn install
 ```
+- will install project dependencies
+
 
 ## Running the app
 
@@ -40,8 +43,12 @@ $ yarn install
 # development
 $ yarn run start
 
+- will seed users, products and commission data
+
 # watch mode
 $ yarn run start:dev
+
+= start server dev mode
 
 # production mode
 $ yarn run start:prod
@@ -53,7 +60,8 @@ $ yarn run start:prod
 
 # e2e tests
 $ yarn run test:e2e
-- this creates a separate db instance for testing
+
+- this creates a separate db instance for testing e2e
 
 # test coverage
 $ yarn run test:cov

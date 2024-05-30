@@ -42,8 +42,6 @@ export class ProductsService {
       );
     }
 
-    this.logger.log(`product found ${product}`);
-
     return product;
   }
 
@@ -74,8 +72,6 @@ export class ProductsService {
       },
     );
 
-    this.logger.log(`product updated ${product}`);
-
     return updateproduct;
   }
 
@@ -96,8 +92,6 @@ export class ProductsService {
       );
     }
     const deleteProduct = await this.ProductModel.findByIdAndDelete(productId);
-    this.logger.log(`product deleted ${product}`);
-
     return deleteProduct;
   }
 
