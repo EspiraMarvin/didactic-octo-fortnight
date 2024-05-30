@@ -486,7 +486,7 @@ Req Response:
 ## Statements/Reports
 ### List a loggedin agent sales reports (GET req)
 
-URL: localhost:3000/sales/statements/?startDate=""&endDate=""sendToMail=false \
+URL: localhost:3000/sales/statements/?startDate=""&endDate=""&sendToMail=false \
 Ex.localhost:3000/sales/statements/?startDate=2024-05-A27&endDate=2024-05-31&sendToMail=false \
 Req Response:
 ```
@@ -519,7 +519,7 @@ Req Response:
 ```
 ### List a loggedin agent sales reports and send to mail (GET req)
 
-URL: localhost:3000/sales/statements/?startDate=""&endDate=""sendToMail=true \
+URL: localhost:3000/sales/statements/?startDate=""&endDate=""&sendToMail=true \
 Ex.localhost:3000/sales/statements/?startDate=2024-05-A27&endDate=2024-05-31&sendToMail=true \
 Req Response:
 ```
