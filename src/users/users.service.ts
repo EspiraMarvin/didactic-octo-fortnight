@@ -38,8 +38,6 @@ export class UsersService {
       );
     }
 
-    this.logger.log(`User found ${user}`);
-
     return deletePwdFromResponse(user);
   }
 
@@ -92,8 +90,6 @@ export class UsersService {
       new: true,
     });
 
-    this.logger.log(`User updated ${user}`);
-
     return deletePwdFromResponse(updateUser);
   }
 
@@ -125,7 +121,6 @@ export class UsersService {
     }
 
     const deleteUser = await this.userModel.findByIdAndDelete(userId);
-    this.logger.log(`User deleted ${user}`);
 
     return deletePwdFromResponse(deleteUser);
   }

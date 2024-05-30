@@ -44,7 +44,6 @@ export class UsersSeedService {
       const createdUser = new this.userModel(user);
       await createdUser.save();
     }
-    this.logger.log(`Users data seeded successfully`);
   }
 
   async seedCommission() {
@@ -62,6 +61,5 @@ export class UsersSeedService {
 
     const commission = new this.commissionModel(commissionData);
     await commission.save();
-    this.logger.log(`Commission data seeded successfully`);
   }
 }

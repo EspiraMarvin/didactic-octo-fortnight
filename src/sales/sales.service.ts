@@ -113,7 +113,6 @@ export class SalesService {
     endDate: Date,
     userId?: string,
   ): Promise<Sale[]> {
-    this.logger.log(`USER ID`, userId);
     let filters: any = {};
     if (userId) filters = { agent: userId };
 
@@ -155,7 +154,6 @@ export class SalesService {
     endDate: Date,
     userId?: string,
   ): Promise<Sale[]> {
-    this.logger.log(`USER ID`, userId);
     let filters: any = {};
     if (userId) filters = { agent: userId };
 
@@ -226,7 +224,6 @@ export class SalesService {
 
     /** unpaid commission from the last commmulative accounts record */
     const totalUnpaidCommission = (await this.accountModel.findOne({}).sort({ date: -1 })).total_commission_pending;
-    this.logger.log(`UNPAID COMMISSION RESPONSE`, totalUnpaidCommission )
 
     const totalSaleValue = stmt.reduce(
       (acc, curr) => acc + curr.totalAmount,

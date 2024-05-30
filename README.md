@@ -28,6 +28,8 @@
 
 ## Installation
 
+## copy env.example file and prefill the config variables
+
 ```bash
 $ yarn install
 ```
@@ -48,11 +50,10 @@ $ yarn run start:prod
 ## Test
 
 ```bash
-# unit tests
-$ yarn run test
 
 # e2e tests
 $ yarn run test:e2e
+- this creates a separate db instance for testing
 
 # test coverage
 $ yarn run test:cov

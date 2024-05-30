@@ -105,4 +105,37 @@ export class AuthService {
 
     return deletePwdFromResponse(newAgent);
   }
+
+  // FOR test purposes
+  async signUpAdmin(body: SignUpAgentDto): Promise<User> {
+    // check if user credentials are for the admin / our seeded admin credentials
+  
+    // check if user exists
+    const exists = await this.userModel.findOne({
+      name: body.name,
+      email: body.email,
+    });
+
+    if (exists)
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: `User already exists`,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+
+    // hash password
+    const password = await hash(body.password.toString(), 10);
+    body.password = password;
+
+    /** specify role as agent */
+    const newBody = { ...body, role: 'admin' };
+
+    const newAgent = new this.userModel(newBody);
+    await newAgent.save();
+
+    return deletePwdFromResponse(newAgent);
+  }
+  
 }
