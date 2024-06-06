@@ -42,7 +42,11 @@ export class SalesController {
     @GetUserData('_id') userId?: string,
   ) {
     try {
-      return this.salesService.getAllIndividualSales(startDate, endDate, userId);
+      return this.salesService.getAllIndividualSales(
+        startDate,
+        endDate,
+        userId,
+      );
     } catch (err) {
       throw new Error(err);
     }
@@ -54,10 +58,15 @@ export class SalesController {
     @Query('startDate', DateCastPipe) startDate: Date,
     @Query('endDate', DateCastPipe) endDate: Date,
     @GetUserData() user: User,
-    @Query('sendToMail', ParseBoolPipe) sendToMail?: boolean
+    @Query('sendToMail', ParseBoolPipe) sendToMail?: boolean,
   ) {
     try {
-      return this.salesService.getAgentSalesReport(startDate, endDate, user, sendToMail);
+      return this.salesService.getAgentSalesReport(
+        startDate,
+        endDate,
+        user,
+        sendToMail,
+      );
     } catch (err) {
       throw new Error(err);
     }

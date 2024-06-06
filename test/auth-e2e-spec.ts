@@ -1,6 +1,3 @@
-
-
-
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as pactum from 'pactum';
@@ -15,7 +12,7 @@ describe('App e2e', () => {
     await mongoose.connection.db.dropDatabase();
 
     const moduleRef = await Test.createTestingModule({
-      imports
+      imports,
     }).compile();
     app = moduleRef.createNestApplication();
     app.useGlobalPipes(
@@ -29,8 +26,8 @@ describe('App e2e', () => {
     pactum.request.setBaseUrl('http://localhost:4441');
   });
 
-  afterAll(async() => {
-  await mongoose.disconnect();
+  afterAll(async () => {
+    await mongoose.disconnect();
     app.close();
   });
 
@@ -40,7 +37,7 @@ describe('App e2e', () => {
       email: 'testauth@gmail.com',
       password: '12345345',
     };
-    
+
     describe('Signup', () => {
       it('should throw if email empty', () => {
         return pactum
@@ -66,7 +63,7 @@ describe('App e2e', () => {
           .post('/auth/signup-agent')
           .withBody({
             email: dto.email,
-            password: '233'
+            password: '233',
           })
           .expectStatus(400);
       });
@@ -90,7 +87,7 @@ describe('App e2e', () => {
           .withBody({
             password: dto.password,
           })
-          .expectStatus(400)
+          .expectStatus(400);
       });
       it('should throw if password empty', () => {
         return pactum
@@ -114,11 +111,9 @@ describe('App e2e', () => {
           .post('/auth/signin')
           .withBody(signindto)
           .expectStatus(200)
-          .stores('userAt', 'access_token')
+          .stores('userAt', 'access_token');
         //   .inspect();
       });
     });
   });
-
 });
-

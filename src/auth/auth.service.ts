@@ -109,7 +109,7 @@ export class AuthService {
   // FOR test purposes
   async signUpAdmin(body: SignUpAgentDto): Promise<User> {
     // check if user credentials are for the admin / our seeded admin credentials
-  
+
     // check if user exists
     const exists = await this.userModel.findOne({
       name: body.name,
@@ -137,5 +137,4 @@ export class AuthService {
 
     return deletePwdFromResponse(newAgent);
   }
-  
 }

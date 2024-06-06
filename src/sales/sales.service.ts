@@ -141,7 +141,6 @@ export class SalesService {
     return sales;
   }
 
-  
   /**
    *
    * @param startDate
@@ -180,7 +179,6 @@ export class SalesService {
     return sales;
   }
 
-  
   /**
    *
    * @param startDate
@@ -188,11 +186,17 @@ export class SalesService {
    * @param userId
    * @returns
    */
-  async getAgentSalesReport(startDate: Date, endDate: Date, user: User, sendToMail: boolean) {
+  async getAgentSalesReport(
+    startDate: Date,
+    endDate: Date,
+    user: User,
+    sendToMail: boolean,
+  ) {
     let filters: any = {};
-    if (user.role !== 'agent')  throw new BadRequestException(
-      `Invalid operation!, If you're an agent contact for assistance`,
-    );
+    if (user.role !== 'agent')
+      throw new BadRequestException(
+        `Invalid operation!, If you're an agent contact for assistance`,
+      );
     if (user) filters = { agent: user['_id'] };
 
     if (startDate || endDate) {
@@ -223,7 +227,9 @@ export class SalesService {
     });
 
     /** unpaid commission from the last commmulative accounts record */
-    const totalUnpaidCommission = (await this.accountModel.findOne({}).sort({ date: -1 })).total_commission_pending;
+    const totalUnpaidCommission = (
+      await this.accountModel.findOne({}).sort({ date: -1 })
+    ).total_commission_pending;
 
     const totalSaleValue = stmt.reduce(
       (acc, curr) => acc + curr.totalAmount,
@@ -249,13 +255,12 @@ export class SalesService {
     if (sendToMail) {
       const mailContent = {
         ...data,
-           startDate: JSON.stringify(data.startDate).slice(1, 11),
-           endDate: JSON.stringify(data.endDate).slice(1, 11)
-          }
-         this.mailService.sendSaleReport(mailContent);
+        startDate: JSON.stringify(data.startDate).slice(1, 11),
+        endDate: JSON.stringify(data.endDate).slice(1, 11),
+      };
+      this.mailService.sendSaleReport(mailContent);
     }
 
     return data;
-    
   }
 }

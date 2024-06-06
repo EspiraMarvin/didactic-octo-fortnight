@@ -7,7 +7,7 @@ import { MailService } from 'src/mail/mail.service';
 import { Sale } from 'src/schemas/sale.schema';
 import { User } from 'src/schemas/user.schema';
 import { Account } from 'src/schemas/account.schema';
-import * as moment from "moment";
+import * as moment from 'moment';
 
 @Injectable()
 export class TaskSchedulerService {
@@ -52,10 +52,12 @@ export class TaskSchedulerService {
       };
     });
 
-      /** unpaid commission from the last commmulative accounts record */
-      const totalUnpaidCommission = (await this.accountModel.findOne({}).sort({ date: -1 })).total_commission_pending;
+    /** unpaid commission from the last commmulative accounts record */
+    const totalUnpaidCommission = (
+      await this.accountModel.findOne({}).sort({ date: -1 })
+    ).total_commission_pending;
 
-      const totalSaleValue = stmt.reduce(
+    const totalSaleValue = stmt.reduce(
       (acc, curr) => acc + curr.totalAmount,
       0,
     );
@@ -85,10 +87,9 @@ export class TaskSchedulerService {
   async sendSalesReportsToAgents() {
     const users: User[] = await this.userModel.find({ role: 'agent' });
     const startDate = moment().startOf('month').toDate();
-    const endDate =  new Date()
+    const endDate = new Date();
 
     for await (const user of users)
       await this.sendSalesReport(startDate, endDate, user);
-
-  } 
+  }
 }

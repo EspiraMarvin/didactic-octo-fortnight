@@ -23,7 +23,6 @@ export class AuthController {
     return this.authService.signUpAgent(body);
   }
 
-
   // FOR E2E TEST ONLY
   @Post('signup-admin') //status code 201
   signUpAdmin(@Body() body: SignUpAgentDto) {
