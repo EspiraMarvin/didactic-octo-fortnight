@@ -28,14 +28,15 @@
 
 ## Installation
 
-- Create a .env file, copy the environment variables from the env.example  file and prefill with your creds
+- Create a .env file, copy the environment variables from the env.example file and prefill with your creds
+
 ##
 
 ```bash
 $ yarn install
 ```
-- will install project dependencies
 
+- will install project dependencies
 
 ## Running the app
 
@@ -67,13 +68,24 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+## Run docker container
+
+```bash
+
+# run docker in detach mode
+$ docker-compose up -d
+
+```
+
 ## API DOCUMENTATION
 
 ## Auth
 
 ### Sign up new agent (POST req)
+
 URL: localhost:3000/auth/signup-agent \
 Req Body:
+
 ```
 {
     "name": "agent one",
@@ -81,7 +93,9 @@ Req Body:
     "password": "password1"
 }
 ```
+
 Req Response:
+
 ```
 {
     "name": "agent one",
@@ -95,27 +109,36 @@ Req Response:
 ```
 
 ### Sign in user (POST req)
+
 URL: localhost:3000/auth/signin \
 Req Body:
+
 ```
 {
     "email": "agent1@gmail.com",
     "password": "password1"
 }
 ```
+
 Req Response:
+
 ```
 {
    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU4MjI3OTAyODY2MDJkMzhmYWY1YjMiLCJlbWFpbCI6ImFnZW50MUBnbWFpbC5jb20iLCJpYXQiOjE3MTcwNTI2OTQsImV4cCI6MTcxNzA1NTY5NH0.9GjU6X2ixJIqxEP4O6No1K6WpCmS9LezYiFjSsoKCPA"
 }
 ```
 
-## Users 
-NB: (Authorized for user with admin role) 
+## Users
+
+NB: (Authorized for user with admin role)
+
 - All requests should contain Bearer Token
+
 ### Create new user (POST req)
+
 URL: localhost:3000/users \
 Req Body:
+
 ```
 {
     "name": "agent two",
@@ -124,7 +147,9 @@ Req Body:
     "role": "agent"
 }
 ```
+
 Req Response:
+
 ```
 {
     "name": "agent two",
@@ -138,8 +163,10 @@ Req Response:
 ```
 
 ### List users (GET req)
+
 URL: localhost:3000/users \
 Req Response:
+
 ```
 [
     {
@@ -164,9 +191,11 @@ Req Response:
 ```
 
 ### List one user (GET req)
+
 URL: localhost:3000/users/:id \
 Ex. localhost:3000/users/665822790286602d38faf5b3 \
 Req Response:
+
 ```
 {
       "_id": "665822790286602d38faf5b3",
@@ -180,15 +209,19 @@ Req Response:
 ```
 
 ### Update one user (PATCH req)
+
 URL: localhost:3000/users/:id \
 Ex. localhost:3000/users/665822790286602d38faf5b3 \
 Req Body:
+
 ```
 {
     "name": "agent one remastered",
 }
 ```
+
 Req Response:
+
 ```
 {
       "_id": "665822790286602d38faf5b3",
@@ -202,9 +235,11 @@ Req Response:
 ```
 
 ### Delete a user (DELETE req)
+
 URL: localhost:3000/users/:id \
 Ex. localhost:3000/users/665822790286602d38faf5b3 \
 Req Response:
+
 ```
 {
       "_id": "665822790286602d38faf5b3",
@@ -218,9 +253,12 @@ Req Response:
 ```
 
 ## Products
+
 ### Create a product (POST req)
+
 URL: localhost:3000/products \
 Req Body:
+
 ```
 {
     "name": "Generic gamepad",
@@ -228,7 +266,9 @@ Req Body:
     "price": "5000"
 }
 ```
+
 Req Response:
+
 ```
 {
     "name": "Generic gamepad",
@@ -242,6 +282,7 @@ Req Response:
 ```
 
 ### List products (GET req)
+
 URL: localhost:3000/products \
 Req Response:
 
@@ -269,9 +310,11 @@ Req Response:
 ```
 
 ### List one product (GET req)
+
 URL: localhost:3000/products/:id \
 Ex. localhost:3000/products/6658322a25ec2251f7e2f1ff \
 Req Response:
+
 ```
 {
         "_id": "6658322a25ec2251f7e2f1ff",
@@ -285,16 +328,20 @@ Req Response:
 ```
 
 ### Update one product (PATCH req)
+
 URL: localhost:3000/products/:id \
 Ex. localhost:3000/products/6658322a25ec2251f7e2f1ff \
 Req Body:
+
 ```
 {
     "name": "PS5 Generic gamepad",
     "price: 7000
 }
 ```
+
 Req Response:
+
 ```
 {
     "_id": "6658322a25ec2251f7e2f1ff",
@@ -308,9 +355,11 @@ Req Response:
 ```
 
 ### Delete a product (DELETE req)
+
 URL: localhost:3000/products/:id \
 Ex. localhost:3000/products/6658322a25ec2251f7e2f1ff \
 Req Response:
+
 ```
 {
     "_id": "6658322a25ec2251f7e2f1ff",
@@ -324,16 +373,21 @@ Req Response:
 ```
 
 ## Sales
+
 ### Record a new sale (POST req)
+
 URL: localhost:3000/sales \
 Req Body:
+
 ```
 {
 	"product": "6658093704982536723b731c",
 	"quantity": 1
 }
 ```
+
 Req Response:
+
 ```
 {
     "product": "6658093704982536723b731c",
@@ -351,9 +405,11 @@ Req Response:
 ```
 
 ### List logged in agent individual sales over a period of time (GET req)
+
 URL: localhost:3000/sales/individual?startDate=""&endDate="" \
 Ex. localhost:3000/sales/individual?startDate=2024-05-27&endDate=2024-05-31 \
 Req Response:
+
 ```
 [
     {
@@ -397,15 +453,17 @@ Req Response:
         "createdAt": "2024-05-30T08:44:06.817Z",
         "updatedAt": "2024-05-30T08:44:06.817Z",
         "__v": 0
-    } 
+    }
 ]
 ```
 
 ### List all sales made by agents(GET req)
+
 - Done by admin role users
-URL: localhost:3000/sales/?startDate=""&endDate="" \
-Ex. localhost:3000/sales?startDate=2024-05-27&endDate=2024-05-31 \
-Req Response:
+  URL: localhost:3000/sales/?startDate=""&endDate="" \
+  Ex. localhost:3000/sales?startDate=2024-05-27&endDate=2024-05-31 \
+  Req Response:
+
 ```
 [
     {
@@ -491,13 +549,14 @@ Req Response:
 ]
 ```
 
-
 ## Statements/Reports
+
 ### List a loggedin agent sales reports (GET req)
 
 URL: localhost:3000/sales/statements/?startDate=""&endDate=""&sendToMail=false \
 Ex.localhost:3000/sales/statements/?startDate=2024-05-A27&endDate=2024-05-31&sendToMail=false \
 Req Response:
+
 ```
 {
     "userName": "marvin espira",
@@ -526,11 +585,13 @@ Req Response:
     ]
 }
 ```
+
 ### List a loggedin agent sales reports and send to mail (GET req)
 
 URL: localhost:3000/sales/statements/?startDate=""&endDate=""&sendToMail=true \
 Ex.localhost:3000/sales/statements/?startDate=2024-05-A27&endDate=2024-05-31&sendToMail=true \
 Req Response:
+
 ```
 {
     "userName": "marvin espira",
