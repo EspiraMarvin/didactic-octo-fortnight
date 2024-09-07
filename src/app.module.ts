@@ -15,6 +15,8 @@ import { SalesModule } from './sales/sales.module';
 import { MailModule } from './mail/mail.module';
 import { TaskSchedulerController } from './task-scheduler/task-scheduler.controller';
 import { TaskSchedulerModule } from './task-scheduler/task-scheduler.module';
+import { BullModule } from '@nestjs/bullmq';
+import { QueueModule } from './queue/queue.module';
 
 @Module({
   imports: [
@@ -28,12 +30,19 @@ import { TaskSchedulerModule } from './task-scheduler/task-scheduler.module';
       { name: 'Commission', schema: CommissionSchema },
       { name: 'Product', schema: ProductSchema },
     ]),
+    BullModule.forRoot({
+      connection: {
+        host: 'localhost',
+        port: Number(process.env.REDIS_PORT),
+      },
+    }),
     AuthModule,
     UsersModule,
     ProductsModule,
     SalesModule,
     MailModule,
     TaskSchedulerModule,
+    QueueModule,
   ],
   controllers: [AppController, TaskSchedulerController],
   providers: [AppService, UsersSeedService, ProductsSeedService],
