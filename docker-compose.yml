@@ -1,58 +1,50 @@
 version: '3.8'
+
 services:
-  # nest application service
   app:
     container_name: agent-sales-api
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - '3000:3000'
     networks:
-      # - agent-sales-api
-      - api
-    # - agent-sale-api-network
+      - app-network
     env_file:
       - .env
-    environment:
-      - MONGO_URI=mongodb://mongo:27018/incourage
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+    # volumes: // only on dev env
+      # - .:/usr/src/app
     depends_on:
-      - database
+      - mongo
+      - redis
     restart: unless-stopped
     tty: true
 
-  # start the mongodb service as container
-  database:
-    image: mongo:latest
-    container_name: mongodb
+  mongo:
+    image: mongo:7
+    container_name: mongo-db
     restart: always
     ports:
-      - '27018:27017'
-    # environment:
-    # - MONGO_URI=mongodb://mongo:27017/incourage
+      - '27018:27017' 
     volumes:
       - mongo-data:/data/db
-    # MONGO_USER: admin
-    # MONGO_PASSWORD: 123
-    # MONGO_DB: incourage
     env_file:
       - .env
     networks:
-      - api
+      - app-network
 
-    # use redis
-    # redis:
-    #   image: redis:7-alpine
-    #   ports:
-    #     - 6379:6379
+  redis:
+    image: redis:7-alpine
+    container_name: redis-cache
+    ports:
+      - '6380:6379' # HostPort:ContainerPort
+    restart: unless-stopped
+    networks:
+      - app-network
 
-#Docker Networks
 networks:
-  api:
+  app-network:
     driver: bridge
-#Volumes
+
 volumes:
   mongo-data:
