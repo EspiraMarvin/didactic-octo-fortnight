@@ -1,0 +1,33 @@
+replicaCount: 2
+
+image:
+  repository: your-dockerhub-username/agent-sales-api
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3000
+
+mongo:
+  image: mongo:7
+  port: 27017
+  pvc:
+    enabled: true
+    size: 1Gi
+  env:
+    MONGO_INITDB_ROOT_USERNAME: root
+    MONGO_INITDB_ROOT_PASSWORD: example
+
+redis:
+  image: redis:7-alpine
+  port: 6379
+
+ingress:
+  enabled: true
+  host: agent-sales.local
+
+envSecrets:
+  DB_URI: mongodb://root:example@mongo:27017/
+  REDIS_HOST: redis://redis:6379
+  JWT_SECRET: supersecret
