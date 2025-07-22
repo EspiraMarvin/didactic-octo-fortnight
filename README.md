@@ -77,6 +77,22 @@ $ docker-compose up -d
 
 ```
 
+
+## Deploy with Helm
+
+```bash
+
+# Package and deploy
+helm install agent-sales ./deployment
+
+# Or upgrade after changes
+helm upgrade agent-sales ./deployment
+
+# View resources
+kubectl get all
+
+```
+
 ## API DOCUMENTATION
 
 ## Auth
